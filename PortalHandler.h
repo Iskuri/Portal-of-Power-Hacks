@@ -23,6 +23,7 @@ public:
 	libusb_device_handle* connect(void);
 	void writeData(char* data);
 private:
+
 	struct libusb_device_handle* deviceHandler;
 };
 

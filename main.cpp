@@ -29,7 +29,8 @@ int main(int argc, char** argv) {
 	int b = time(NULL);
 	int c = getpid();
 	
-	//ignore this shit later
+
+	//ignore this later
 	a=a-b;  a=a-c;  a=a^(c >> 13);
 	b=b-c;  b=b-a;  b=b^(a << 8);
 	c=c-a;  c=c-b;  c=c^(b >> 13);

@@ -78,7 +78,7 @@ libusb_device_handle* PortalHandler::connect(void) {
 //	printf("Found %d devices\n",devicesCount);
 	
 	int error;
-	
+
 	for(int i = 0 ; i < devicesCount ; i++) {
 		
 		struct libusb_device_descriptor descriptor;
