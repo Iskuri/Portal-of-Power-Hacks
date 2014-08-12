@@ -11,9 +11,7 @@
 #include "hidapi.h"
 #include <stdio.h>
 #include "libusb-1.0/libusb.h"
-#include "LibusbHandler.h"
 #include <string.h>
-#include "LibusbHandler.h"
 
 #define writeBufferSize  0x21;
 
