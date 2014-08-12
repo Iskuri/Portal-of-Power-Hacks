@@ -44,13 +44,11 @@ int main(int argc, char** argv) {
 	while(true) {
 		
 		double flashColour = abs((long)(sin((double)flashCount)*0xFF));
-//		double gFlashColour = abs((long)(cos((double)flashCount)*0xFF));
-		printf("flash colour: %f\n",flashColour);
-//		portalHandler.setColour(0 + (rand() % (int)(255 - 0 + 1)),0 + (rand() % (int)(255 - 0 + 1)),0 + (rand() % (int)(255 - 0 + 1)));
+
 		portalHandler.setColour((int)flashColour,0,0);
 		
 		flashCount+=0.1;
-		usleep(30000);
+		usleep(70000);
 	}
 	
 	return 0;

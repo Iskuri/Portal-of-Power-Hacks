@@ -100,9 +100,6 @@ libusb_device_handle* PortalHandler::connect(void) {
 
 		if(descriptor.idVendor == 0x1430 && descriptor.idProduct == 0x150) {
 			
-			printf("Woop woop got past this shit\n");
-//			libusb_close(tryDeviceHandler);
-			
 			deviceId = i;
 			
 			return tryDeviceHandler;
