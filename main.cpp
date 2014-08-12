@@ -41,6 +41,8 @@ int main(int argc, char** argv) {
 	
 	double flashCount = 0;
 	
+//	portalHandler.reset();
+	
 	while(true) {
 		
 		double flashColour = abs((long)(sin((double)flashCount)*0xFF));

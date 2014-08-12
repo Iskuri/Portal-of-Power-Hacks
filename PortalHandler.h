@@ -24,6 +24,8 @@ public:
 	void writeData(char* data);
 	libusb_device_handle* deviceHandler;
 	void setColour(int r, int g, int b);
+	void reset();
+	char* read();
 	
 private:
 	int deviceId;

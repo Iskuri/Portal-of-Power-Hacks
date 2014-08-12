@@ -71,6 +71,16 @@ void PortalHandler::setColour(int r, int g, int b) {
 	writeData(data);
 }
 
+char* PortalHandler::read() {
+	
+}
+
+void PortalHandler::reset() {
+	char* data = new char[0x21];
+	data[1] = 'R';
+	writeData(data);	
+}
+
 libusb_device_handle* PortalHandler::connect(void) {
 	
 //	printf("Connecting to device\n");
