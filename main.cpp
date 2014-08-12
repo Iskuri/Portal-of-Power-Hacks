@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include<sys/types.h>
 #include<iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -19,16 +20,11 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	PortalHandler* portalHandler;
-
-	printf("Starting interface\n");
-	
-//	portalHandler->connect();
+	PortalHandler portalHandler;
 
 	int a = clock();
 	int b = time(NULL);
 	int c = getpid();
-	
 
 	//ignore this later
 	a=a-b;  a=a-c;  a=a^(c >> 13);
@@ -43,21 +39,19 @@ int main(int argc, char** argv) {
 	
 	srand(c);
 	
-	char* data = new char[0x21];
+	double flashCount = 0;
 	
-//	data[1] = 'C';
-//	data[2] = 0x00; // R
-//	data[3] = 0x00; // G
-//	data[4] = 0xFF; // B
-//	portalHandler->writeData(data);
-	
-//	while(true) {
-		data[1] = 'C';
-		data[2] = 0 + (rand() % (int)(255 - 0 + 1));
-		data[3] = 0 + (rand() % (int)(255 - 0 + 1));
-		data[4] = 0 + (rand() % (int)(255 - 0 + 1));
-		portalHandler->writeData(data);		
-//	}
+	while(true) {
+		
+		double flashColour = abs((long)(sin((double)flashCount)*0xFF));
+//		double gFlashColour = abs((long)(cos((double)flashCount)*0xFF));
+		printf("flash colour: %f\n",flashColour);
+//		portalHandler.setColour(0 + (rand() % (int)(255 - 0 + 1)),0 + (rand() % (int)(255 - 0 + 1)),0 + (rand() % (int)(255 - 0 + 1)));
+		portalHandler.setColour((int)flashColour,0,0);
+		
+		flashCount+=0.1;
+		usleep(30000);
+	}
 	
 	return 0;
 }

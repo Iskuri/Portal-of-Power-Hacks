@@ -11,7 +11,9 @@
 #include "hidapi.h"
 #include <stdio.h>
 #include "libusb-1.0/libusb.h"
+#include "LibusbHandler.h"
 #include <string.h>
+#include "LibusbHandler.h"
 
 #define writeBufferSize  0x21;
 
@@ -22,9 +24,11 @@ public:
 	hid_device* portal;
 	libusb_device_handle* connect(void);
 	void writeData(char* data);
+	libusb_device_handle* deviceHandler;
+	void setColour(int r, int g, int b);
+	
 private:
-
-	struct libusb_device_handle* deviceHandler;
+	int deviceId;
 };
 
 #endif	/* PORTALHANDLER_H */

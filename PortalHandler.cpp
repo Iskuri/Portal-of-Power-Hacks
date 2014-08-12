@@ -9,7 +9,9 @@
 
 PortalHandler::PortalHandler() {
 	
-	connect();
+	deviceId = 0;
+
+	deviceHandler = connect();
 }
 
 PortalHandler::~PortalHandler() {
@@ -26,11 +28,7 @@ void PortalHandler::writeData(char* data) {
 //	data[1] = 'R';
 	int dataLength = 0x21;
 	int retVal;
-//	data[1] = 'C';
-//	data[2] = 0xFF; // R
-//	data[3] = 0xFF; // G
-//	data[4] = 0xFF; // B
-	
+
 	int reportNumber = data[0];
 
 	if (reportNumber == 0x0) {
@@ -38,18 +36,18 @@ void PortalHandler::writeData(char* data) {
 		dataLength--;
 	}
 	
-	libusb_device_handle* tryDeviceHandler = connect();
+//	libusb_device_handle* tryDeviceHandler = connect();
 	
-	if (libusb_kernel_driver_active(tryDeviceHandler, 0) == 1) {
-		retVal = libusb_detach_kernel_driver(tryDeviceHandler, 0);
+	if (libusb_kernel_driver_active(deviceHandler, 0) == 1) {
+		retVal = libusb_detach_kernel_driver(deviceHandler, 0);
 		if (retVal < 0) {
-			libusb_close(tryDeviceHandler);
+			libusb_close(deviceHandler);
 		}
 	}
 	
-	retVal = libusb_claim_interface(tryDeviceHandler, 0);
+	retVal = libusb_claim_interface(deviceHandler, 0);
 	
-	retVal = libusb_control_transfer(tryDeviceHandler,
+	retVal = libusb_control_transfer(deviceHandler,
 			LIBUSB_REQUEST_TYPE_CLASS|LIBUSB_RECIPIENT_INTERFACE|LIBUSB_ENDPOINT_OUT,
 			0x09,
 			(2 << 8) | reportNumber,
@@ -63,11 +61,20 @@ void PortalHandler::writeData(char* data) {
 	}
 }
 
+void PortalHandler::setColour(int r, int g, int b) {
+	
+	char* data = new char[0x21];
+	data[1] = 'C';
+	data[2] = r;
+	data[3] = g;
+	data[4] = b;
+	writeData(data);
+}
+
 libusb_device_handle* PortalHandler::connect(void) {
 	
-	printf("Connecting to device\n");
+//	printf("Connecting to device\n");
 	
-	struct hid_device_info* deviceList;
 	libusb_device** devices;
 	libusb_context* context;
 	struct libusb_device_handle* tryDeviceHandler;
@@ -79,26 +86,28 @@ libusb_device_handle* PortalHandler::connect(void) {
 	
 	int error;
 
+	struct libusb_device_descriptor descriptor;
+	
 	for(int i = 0 ; i < devicesCount ; i++) {
 		
-		struct libusb_device_descriptor descriptor;
-		struct libusb_interface_descriptor interfaceDescriptor;
+		int retVal = libusb_open(devices[i], &tryDeviceHandler);
 		
-		libusb_open(devices[i], &tryDeviceHandler);
+		if(retVal < 0) {
+			continue;
+		}
 		
 		libusb_get_device_descriptor(devices[i], &descriptor);
-		
-		if(descriptor.idVendor == 0x1430 && descriptor.idProduct == 0x150) {
-//			printf("Found suitable device!\n");
-			
-			libusb_open(devices[i], &tryDeviceHandler);
 
-//			libusb_device_handle = tryDeviceHandler;
+		if(descriptor.idVendor == 0x1430 && descriptor.idProduct == 0x150) {
 			
-//			printf("Set global device variable\n");
+			printf("Woop woop got past this shit\n");
+//			libusb_close(tryDeviceHandler);
+			
+			deviceId = i;
 			
 			return tryDeviceHandler;
 			break;
 		}
+		
 	}
 }
