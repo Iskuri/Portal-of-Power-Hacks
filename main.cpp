@@ -47,7 +47,14 @@ int main(int argc, char** argv) {
 		
 		double flashColour = abs((long)(sin((double)flashCount)*0xFF));
 
+//		printf("Setting colour\n");
 		portalHandler.setColour((int)flashColour,0,0);
+		
+//		printf("Reading data\n");
+		
+		unsigned char* figureInfo = portalHandler.getFigures();
+		
+//		printf("Got figures\n");
 		
 		flashCount+=0.1;
 		usleep(70000);

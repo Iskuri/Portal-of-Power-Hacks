@@ -18,6 +18,49 @@ PortalHandler::~PortalHandler() {
 	
 }
 
+unsigned char* PortalHandler::readData(unsigned char* data) {
+
+//	unsigned char* data;
+	int retVal = -7;
+	int transferred;
+	
+	while(retVal == -7) {
+
+//		printf("Retval looping\n");
+		retVal = libusb_interrupt_transfer(deviceHandler, 129, data, 0x21, &transferred, 500);
+
+//		printf("Error code: %d\n",retVal);
+//		printf("Error name: %s\n",libusb_error_name(retVal));
+	}
+	
+//	printf("transferred: %d\n", transferred);
+//	printf("Returned string %s\n",data);
+//	
+//	printf("About to return data\n");
+	
+	return data;
+}
+
+unsigned char* PortalHandler::getFigures() {
+	
+	char* data = new char[0x21];
+	unsigned char* figureData = new unsigned char[0x21];
+//	unsigned char* returnFigureData = new unsigned char[0x21];
+
+	data[1] = 'Q';
+	data[2] = 0x0+0x10;
+	data[3] = (unsigned char)1;
+	
+	writeData(data);
+
+	figureData = readData(figureData);
+
+	printf("Returned values: %c, %x, %x\n",figureData[0],figureData[1],figureData[2]);
+
+	return figureData;
+	
+}
+
 void PortalHandler::writeData(char* data) {
 
 //	char* data = new char[0x21];
@@ -69,10 +112,6 @@ void PortalHandler::setColour(int r, int g, int b) {
 	data[3] = g;
 	data[4] = b;
 	writeData(data);
-}
-
-char* PortalHandler::read() {
-	
 }
 
 void PortalHandler::reset() {

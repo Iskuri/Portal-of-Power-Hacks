@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "libusb-1.0/libusb.h"
 #include <string.h>
+#include <stdlib.h> 
 
 #define writeBufferSize  0x21;
 
@@ -23,8 +24,9 @@ public:
 	libusb_device_handle* deviceHandler;
 	void setColour(int r, int g, int b);
 	void reset();
-	char* read();
-	
+	unsigned char* readData(unsigned char* data);
+	unsigned char* getFigures();
+	void getFiguresInnerTest();
 private:
 	int deviceId;
 };
