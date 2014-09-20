@@ -41,6 +41,41 @@ unsigned char* PortalHandler::readData(unsigned char* data) {
 	return data;
 }
 
+unsigned char PortalHandler::getByte(unsigned int pos) {
+	
+	char* data = new char[0x21];
+	unsigned char* figureData = new unsigned char[0x21];
+	data[1] = 'Q';
+	char followup;
+
+	if(pos == 0) {
+		followup = 0x11;
+		if(pos == 0) {
+			data[2] = 0x21;
+		} else {
+			data[2] = followup;
+		}
+	} else {
+		followup = 0x10;
+		if(pos == 0) {
+			data[2] = 0x20;
+		} else {
+			data[2] = followup;
+		}
+	}
+
+//	data[2] = 0x20;
+	data[3] = pos;
+	
+	writeData(data);
+	
+	figureData = readData(figureData);
+
+	printf("Returned Fig values: %c, %x, %x\n",figureData[0],figureData[1],figureData[2]);
+
+	return figureData[0];
+}
+
 unsigned char* PortalHandler::getFigures() {
 	
 	char* data = new char[0x21];

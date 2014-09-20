@@ -21,23 +21,6 @@ using namespace std;
 int main(int argc, char** argv) {
 
 	PortalHandler portalHandler;
-
-	int a = clock();
-	int b = time(NULL);
-	int c = getpid();
-
-	//ignore this later
-	a=a-b;  a=a-c;  a=a^(c >> 13);
-	b=b-c;  b=b-a;  b=b^(a << 8);
-	c=c-a;  c=c-b;  c=c^(b >> 13);
-	a=a-b;  a=a-c;  a=a^(c >> 12);
-	b=b-c;  b=b-a;  b=b^(a << 16);
-	c=c-a;  c=c-b;  c=c^(b >> 5);
-	a=a-b;  a=a-c;  a=a^(c >> 3);
-	b=b-c;  b=b-a;  b=b^(a << 10);
-	c=c-a;  c=c-b;  c=c^(b >> 15);
-	
-	srand(c);
 	
 	double flashCount = 0;
 	
@@ -46,13 +29,15 @@ int main(int argc, char** argv) {
 	while(true) {
 		
 		double flashColour = abs((long)(sin((double)flashCount)*0xFF));
-
-//		printf("Setting colour\n");
-//		portalHandler.setColour((int)flashColour,0,0);
-		
-//		printf("Reading data\n");
 		
 		unsigned char* figureInfo = portalHandler.getFigures();
+		
+		if(figureInfo[0] == 'S' && figureInfo[1] != 0) {
+			
+			for(int i = 0 ; i < 0x40 ; i++) {
+				portalHandler.getByte(i);
+			}
+		}
 		
 		if((int)figureInfo[1] != 0 ) {
 			portalHandler.setColour(0,(int)flashColour,0);

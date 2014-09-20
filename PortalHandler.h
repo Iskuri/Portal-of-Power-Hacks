@@ -27,6 +27,7 @@ public:
 	unsigned char* readData(unsigned char* data);
 	unsigned char* getFigures();
 	void getFiguresInnerTest();
+	unsigned char getByte(unsigned int pos);
 private:
 	int deviceId;
 };
